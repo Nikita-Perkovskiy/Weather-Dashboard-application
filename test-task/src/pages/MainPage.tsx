@@ -9,14 +9,13 @@ import {
   addFavoriteCity,
   removeFavoriteCity,
 } from "../features/favoriteCities/favoriteCitiesActions.ts";
+import { LadingSpinner } from "../components/LadingSpinner/LadingSpinner.tsx";
 
 export const MainPage = () => {
   const [searchData, setSearchData] = useState("");
   const [weatherData, setWeatherData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  // const [favoriteCitiesId, setFavoriteCitiesId] = useState(new Set());
-  // const [favoriteCities, setFavoriteCities] = useState([]);
   const dispatch = useDispatch();
   const favoriteCities = useSelector((state) => state.favoriteCities);
   const favoriteCitiesId = useSelector((state) => state.favoriteCitiesId);
@@ -37,7 +36,7 @@ export const MainPage = () => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    setIsLoading(!isLoading);
+    setIsLoading(true);
 
     try {
       setIsError(false);
@@ -47,68 +46,64 @@ export const MainPage = () => {
     } catch (error) {
       setIsError(true);
     } finally {
-      setIsLoading(!isLoading);
+      setIsLoading(false);
     }
   };
+
   const toggleFavoriteCity = (city) => {
-    const updatedFavorites = new Set(favoriteCitiesId);
-    if (updatedFavorites.has(city.id)) {
-      // updatedFavorites.delete(city.id);
-      // setFavoriteCitiesId(updatedFavorites);
-      // setFavoriteCities((prevCities) =>
-      //   prevCities.filter((favCity) => favCity.id !== city.id)
-      // );
+    if (favoriteCitiesId.has(city.id)) {
       dispatch(removeFavoriteCity(city.id));
     } else {
-      // updatedFavorites.add(city.id);
-      // setFavoriteCitiesId(updatedFavorites);
-      // setFavoriteCities((prevCities) => [...prevCities, city]);\
       dispatch(addFavoriteCity(city));
     }
   };
 
-  console.log(
-    "favoriteCities",
-    favoriteCities,
-    "favoriteCitiesId",
-    favoriteCitiesId
-  );
   return (
-    <main style={mainPageStyles.mainContainer}>
-      <SearchForm
-        searchFunction={handleSearch}
-        searchValue={searchData}
-        changeValueFunction={handleInputChange}
-        isError={isError}
-      />
-      <h4 style={mainPageStyles.sectionHeader}>Current city:</h4>
-      <div style={mainPageStyles.infoWrapper}>
-        {weatherData ? (
-          <CityCard
-            cityData={weatherData}
-            toggelCity={toggleFavoriteCity}
-            isFavoriteStatus={false}
+    <>
+      {isLoading ? <LadingSpinner /> : null}
+      <main style={mainPageStyles.mainContainer}>
+        <section style={mainPageStyles.sectionWrapper}>
+          <h4 style={mainPageStyles.sectionHeader}>Select a city:</h4>
+          <SearchForm
+            searchFunction={handleSearch}
+            searchValue={searchData}
+            changeValueFunction={handleInputChange}
+            isError={isError}
           />
-        ) : (
-          <p>Please select a city in the search bar.</p>
-        )}
-      </div>
-      <section>
-        <h4 style={mainPageStyles.sectionHeader}>List of favorite cities:</h4>
-        {favoriteCities.length > 0 ? (
-          favoriteCities.map((city) => (
-            <div key={city.id} style={mainPageStyles.cityItem}>
+        </section>
+        <section style={mainPageStyles.sectionWrapper}>
+          <h4 style={mainPageStyles.sectionHeader}>Current city:</h4>
+          <div style={mainPageStyles.infoWrapper}>
+            {weatherData ? (
               <CityCard
-                cityData={city}
+                cityData={weatherData}
                 toggelCity={toggleFavoriteCity}
-                isFavoriteStatus={true}
+                isFavoriteListId={favoriteCitiesId}
               />
-            </div>
-          ))
-        ) : (
-          <p>No favorite cities added yet.</p>
-        )}
-      </section>
-    </main>
+            ) : (
+              <p>Please select a city in the search bar.</p>
+            )}
+          </div>
+        </section>
+        <section style={mainPageStyles.sectionWrapper}>
+          <h4 style={mainPageStyles.sectionHeader}>List of favorite cities:</h4>
+          <div style={mainPageStyles.infoWrapper}>
+            {favoriteCities.length > 0 ? (
+              favoriteCities.map((city) => (
+                <div key={city.id} style={mainPageStyles.cityItem}>
+                  <CityCard
+                    cityData={city}
+                    toggelCity={toggleFavoriteCity}
+                    isFavoriteListId={favoriteCitiesId}
+                  />
+                </div>
+              ))
+            ) : (
+              <p>No favorite cities added yet.</p>
+            )}
+          </div>
+        </section>
+      </main>
+    </>
   );
 };

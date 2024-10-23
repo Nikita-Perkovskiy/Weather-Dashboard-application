@@ -2,8 +2,10 @@ import { BASE_BLACK, BASE_WHITE, ERROR_COLOR } from "../../styles/colors.ts";
 
 export const SearchFormStyles = {
   formWrapper: {
+    padding: "30px 0px 30px 0px",
     margin: "auto",
-    width: "300px",
+    maxWidth: "300px",
+    width: "100%",
   },
   errorText: {
     margin: "20px 0px 20px 0px",
@@ -16,7 +18,7 @@ export const SearchFormStyles = {
     padding: "10px",
     width: "100%",
     fontSize: "16px",
-    marginBottom: "30px",
+    marginBottom: "10px",
     display: "block",
   },
   buttonStyles: {
