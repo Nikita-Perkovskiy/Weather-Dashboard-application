@@ -7,7 +7,6 @@ export const SearchForm = ({
   changeValueFunction,
   isError,
 }) => {
-  console.log("isError in Search Form", isError);
   return (
     <form>
       <div style={SearchFormStyles.formWrapper}>
@@ -18,14 +17,14 @@ export const SearchForm = ({
           placeholder="Enter search term"
           style={SearchFormStyles.searchStyles}
         />
+        <button onClick={searchFunction} style={SearchFormStyles.buttonStyles}>
+          Search
+        </button>
         {isError ? (
           <p style={SearchFormStyles.errorText}>
             Something's gone wrong! Please change your request!
           </p>
         ) : null}
-        <button onClick={searchFunction} style={SearchFormStyles.buttonStyles}>
-          Search
-        </button>
       </div>
     </form>
   );

@@ -3,11 +3,7 @@ import { cityCardStyles } from "./CityCard.styled.ts";
 import { ReactComponent as EmptyStarIcon } from "../../assets/svgs/emptyStarIcon.svg";
 import { ReactComponent as StarIcon } from "../../assets/svgs/starIcon.svg";
 
-export const CityCard = ({
-  cityData,
-  toggelCity,
-  isFavoriteStatus = false,
-}) => {
+export const CityCard = ({ cityData, toggelCity, isFavoriteStatus }) => {
   const [isFavorite, setIsFavorite] = useState(isFavoriteStatus);
   const tempInCelsius = (cityData.temperature - 273.15).toFixed(2);
 

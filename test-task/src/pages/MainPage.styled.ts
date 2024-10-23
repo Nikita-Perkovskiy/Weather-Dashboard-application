@@ -1,10 +1,8 @@
 export const mainPageStyles = {
   mainContainer: {
-    marginTop: "50px",
+    margin: "auto",
     maxWidth: "1200px",
-    marginLeft: "auto",
-    marginRight: "auto",
-    padding: "0 20px",
+    padding: "50px 10px 0px 10",
     textAlign: "center",
   },
   infoWrapper: {
@@ -23,5 +21,8 @@ export const mainPageStyles = {
     right: "10px",
     width: "24px",
     height: "24px",
+  },
+  cityItem: {
+    margin: "20px",
   },
 };
